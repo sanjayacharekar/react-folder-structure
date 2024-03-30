@@ -1,43 +1,52 @@
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Breadcrumbs from './Breadcrumbs';
 import FileTable from './FileTable';
 import folderStructure from '../../data/folderStructure.json';
-import { createTheme } from '@mui/material/styles';
+import { Container } from '@mui/material';
 
-const themes = createTheme({
-  spacing: 8, 
+const darkBackground = {
+  default: '#f0f0ff',
+  paper: '#1E1E1E',
+};
+
+const customTheme = createTheme({
+  palette: {
+    mode: 'light',
+    background: darkBackground,
+  },
 });
 
-const useStyles = makeStyles(() => ({
-  root: {
-    padding: themes.spacing(2),
-  },
-}));
-
 const FileBrowser: React.FC = () => {
-    const classes = useStyles();
-    const [currentFolder, setCurrentFolder] = useState(folderStructure.app);
-    const [breadcrumb, setBreadcrumb] = useState([folderStructure.app]);
-  
-    const handleFolderClick = (folder: any) => {
-      setCurrentFolder(folder);
-      // Update breadcrumb
-      setBreadcrumb([...breadcrumb, folder]);
-    };
-  
-    const handleBreadcrumbClick = (index: number) => {
-      const newBreadcrumb = breadcrumb.slice(0, index + 1);
-      setBreadcrumb(newBreadcrumb);
-      setCurrentFolder(newBreadcrumb[index]);
-    };
-  
-    return (
-      <div className={classes.root}>
-        <Breadcrumbs breadcrumb={breadcrumb} onBreadcrumbClick={handleBreadcrumbClick} />
-        <FileTable files={currentFolder.children} onFolderClick={handleFolderClick} />
-      </div>
-    );
+  const [currentFolder, setCurrentFolder] = useState(folderStructure.app);
+  const [breadcrumb, setBreadcrumb] = useState([folderStructure.app]);
+
+  const handleFolderClick = (folder: any) => {
+    setCurrentFolder(folder);
+    setBreadcrumb([...breadcrumb, folder]);
   };
-  
-  export default FileBrowser;
+
+  const handleBreadcrumbClick = (index: number) => {
+    const newBreadcrumb = breadcrumb.slice(0, index + 1);
+    setBreadcrumb(newBreadcrumb);
+    setCurrentFolder(newBreadcrumb[index]);
+  };
+
+  return (
+    <ThemeProvider theme={customTheme}>
+      <Container maxWidth="lg" className='bg-[#FFFAFA] p-6 h-screen border-r-4 border-4 rounded-2xl	pb-0 '>
+        <div className=''>
+        <h1 className="text-3xl font-semibold text-slate-500">File Browser</h1>
+        <hr className='my-3 border-t border-gray-300 drop-shadow-md' />
+
+        <Breadcrumbs breadcrumb={breadcrumb} onBreadcrumbClick={handleBreadcrumbClick} />
+        <hr className='my-4 border-t border-gray-300 drop-shadow-md shadow-inner' />
+
+        <FileTable files={currentFolder.children} onFolderClick={handleFolderClick} />
+        </div>
+      </Container>
+    </ThemeProvider>
+  );
+};
+
+export default FileBrowser;

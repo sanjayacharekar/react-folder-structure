@@ -1,9 +1,10 @@
 import React from "react";
 import FileBrowser from "./components/FileBrowser/FileBrowser";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const darkBackground = {
-  default: "#121212",
+  default: "#ff0",
   paper: "#1E1E1E",
 };
 
@@ -12,13 +13,13 @@ const customTheme = createTheme({
   spacing: 2, // Customize other theme properties as needed
   palette: {
     mode: "light", // Set dark mode
-    background: darkBackground, // Provide dark background object
+    background: darkBackground, 
+    // Provide dark background object
   },
 });
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>File Browser</h1>
+    <div className="bg-[#f1f3f4] h-screen">
       <ThemeProvider theme={customTheme}>
         <FileBrowser />
       </ThemeProvider>
